@@ -49,7 +49,7 @@ def make_json_serializable(x):
 
 def get_metadata(path):
     metadata = {}
-    exifdata = Image.open(path).getexif()
+    exifdata = Image.open(path)._getexif()
     for tag_id in exifdata:
         tag = TAGS.get(tag_id, tag_id)
         data = exifdata.get(tag_id)
