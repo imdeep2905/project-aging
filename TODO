@@ -1,0 +1,10 @@
+global:
+
+1. It is not a good practice to redefine functions (migration). Restructure and move common functions in a different file.
+2. Convert whole thing into a CLI. Just give options (e.g. raw_convert, migrate, etc.)
+
+raw_converter:
+
+1.  Make default timezone dynamic - maybe a command line argument?
+2.  Standardize input/output (i.e. in and out folders).
+3.  Validate and use gps_timestamp and gps_datestamp.

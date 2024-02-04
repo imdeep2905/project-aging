@@ -1,3 +1,12 @@
+# Input/Output files
+in/
+out/
+src/raw_converter/org
+src/raw_converter/converted
+
+# MAC
+.DS_Store
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
