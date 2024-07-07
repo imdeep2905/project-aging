@@ -11,7 +11,7 @@ ORIGINAL_FOLDER = "org"
 DESTINATION_FOLDER_IMG = "converted/imgs/"
 DESTINATION_FOLDER_METADATA = "converted/metadata/"
 DATE_FORMAT = "%Y:%m:%d %H:%M:%S"
-DEFAULT_TIMEZONE = "Asia/Dubai"
+DEFAULT_TIMEZONE = "America/Toronto"
 
 
 def get_epoch_from_metadata(metadata):
@@ -24,7 +24,7 @@ def get_epoch_from_metadata(metadata):
 
         timezone = TimezoneFinder().timezone_at(lat=lat, lng=lng)
     except KeyError:
-        timezone = "Asia/Dubai"
+        timezone = DEFAULT_TIMEZONE
         print(
             "Latitude or Longitude not found."
             f" Using default timezone '{DEFAULT_TIMEZONE}'",
