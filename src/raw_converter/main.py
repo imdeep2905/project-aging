@@ -1,15 +1,16 @@
 import glob
+import os
 import shutil
 import json
-
+from click import secho
 from timezonefinder import TimezoneFinder
 from exif import Image
 from datetime import datetime
 from dateutil.tz import tz
 
-ORIGINAL_FOLDER = "org"
-DESTINATION_FOLDER_IMG = "converted/imgs/"
-DESTINATION_FOLDER_METADATA = "converted/metadata/"
+ORIGINAL_FOLDER = None
+DESTINATION_FOLDER_IMG = "out/raw_converter/imgs/"
+DESTINATION_FOLDER_METADATA = "out/raw_converter/metadata/"
 DATE_FORMAT = "%Y:%m:%d %H:%M:%S"
 DEFAULT_TIMEZONE = "America/Toronto"
 
@@ -25,9 +26,10 @@ def get_epoch_from_metadata(metadata):
         timezone = TimezoneFinder().timezone_at(lat=lat, lng=lng)
     except KeyError:
         timezone = DEFAULT_TIMEZONE
-        print(
+        secho(
             "Latitude or Longitude not found."
             f" Using default timezone '{DEFAULT_TIMEZONE}'",
+            fg="yellow",
         )
 
     tz_timezone = tz.gettz(timezone)
@@ -50,11 +52,20 @@ def get_metadata(path):
     return metadata
 
 
-def main():
+def main(dir, default_tz):
+    global ORIGINAL_FOLDER
+    global DEFAULT_TIMEZONE
+    ORIGINAL_FOLDER = dir
+    DEFAULT_TIMEZONE = default_tz
+
+    for dir in [DESTINATION_FOLDER_IMG, DESTINATION_FOLDER_METADATA]:
+        os.makedirs(dir, exist_ok=True)
+
+    secho(f"Using input directory: {dir}", fg="green")
     count = 0
     for file in glob.glob(f"{ORIGINAL_FOLDER}/*"):
         count += 1
-        print(f"Processing {file}...")
+        secho(f"Processing {file}...", fg="white")
         metadata = get_metadata(file)
         epoch = get_epoch_from_metadata(metadata)
         # copy file
@@ -65,8 +76,4 @@ def main():
             open(DESTINATION_FOLDER_METADATA + f"{epoch}.json", "w+"),
             indent=4,
         )
-    print(f"Processed {count} files.")
-
-
-if __name__ == "__main__":
-    main()
+    secho(f"Processed {count} files.", fg="green")
